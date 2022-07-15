@@ -3,5 +3,3 @@
 - Init repo
 
 - Test commit 1
-
-- Test commit 2
