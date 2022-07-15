@@ -45,7 +45,7 @@ python explain_model.py explainer=soft_constraint
 You should get the following results when running the code based on our pre-trained model. Note that the numbers in the table are higher than the ones reported in the paper. This is because we use the Albumentations library in the code to transform the keypoint locations with the image. This yields more precise localization compared to the implementation we got from Goyal et al. Overall, the conclusions stay the same. You can play around with the hyperparameters of our algorithm by adapting the `./config/explainer/soft_constraint.yaml` file. The code will generate visualizations of the counterfactuals in the output directory. You can disable this option through the arguments of `explain_dataset()` in the main function.
 
 | Method     | Near KP | Same KP | Number Edits |
-|------------|---------|---------|--------------| 
+|------------|---------|---------|--------------|
 | Goyal      | 53.7    | 30.4    | 3.70         |
 | Ours       | 62.4    | 46.8    | 3.50         |
 
