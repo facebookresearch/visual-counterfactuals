@@ -18,16 +18,15 @@ To use the code, you need to download and extract the CUB-200-2011 dataset from 
 
 ## Training
 
-To train a classifier on CUB run
+For a quick start, download a model trained on CUB using
+```shell
+wget -L https://dl.fbaipublicfiles.com/visual_counterfactuals/cub_res50_model.ckpt
+```
+
+Alternatively, to train a model on CUB run
 
 ```shell
 python class_prediction_model.py
-```
-
-To download a pre-trained model run
-
-```shell
-wget -L https://dl.fbaipublicfiles.com/visual_counterfactuals/cub_res50_model.ckpt
 ```
 
 ## Counterfactuals
