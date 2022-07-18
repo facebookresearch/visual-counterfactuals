@@ -13,10 +13,7 @@ class VGG16(nn.Module):
     def __init__(self, num_classes):
         super(VGG16, self).__init__()
         vgg = torchvision.models.__dict__["vgg16_bn"](pretrained=True)
-        vgg.classifier[-1] = nn.Linear(
-            vgg.classifier[-1].in_features,
-            num_classes
-        )
+        vgg.classifier[-1] = nn.Linear(vgg.classifier[-1].in_features, num_classes)
 
         self.vgg = vgg
         self.num_classes = num_classes
@@ -46,10 +43,7 @@ class ResNet50(nn.Module):
     def __init__(self, num_classes):
         super(ResNet50, self).__init__()
         resnet = torchvision.models.__dict__["resnet50"](pretrained=True)
-        resnet.fc = nn.Linear(
-            resnet.fc.in_features,
-            num_classes
-        )
+        resnet.fc = nn.Linear(resnet.fc.in_features, num_classes)
 
         self.resnet = resnet
         self.num_classes = num_classes

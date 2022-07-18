@@ -4,10 +4,10 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
+from collections import defaultdict
+
 import numpy as np
 import torch
-
-from collections import defaultdict
 
 
 def compute_eval_metrics(
@@ -62,10 +62,7 @@ def compute_eval_metrics(
 
         # flatten the keypoint maps
         query_keypoints = (
-            torch.permute(
-                query_keypoints,
-                (1, 0, 2, 3)
-            ).reshape(n_parts, -1).float()
+            torch.permute(query_keypoints, (1, 0, 2, 3)).reshape(n_parts, -1).float()
         )
         distractor_keypoints = (
             torch.permute(distractor_keypoints, (1, 0, 2, 3))
@@ -93,12 +90,8 @@ def compute_eval_metrics(
     single_edit = {}
     all_edit = {}
 
-    single_edit["Near-KP"] = np.nanmean(
-        [res[0] for res in results["Near-KP"].values()]
-    )
-    single_edit["Same-KP"] = np.nanmean(
-        [res[0] for res in results["Same-KP"].values()]
-    )
+    single_edit["Near-KP"] = np.nanmean([res[0] for res in results["Near-KP"].values()])
+    single_edit["Same-KP"] = np.nanmean([res[0] for res in results["Same-KP"].values()])
     all_edit["Near-KP"] = np.nanmean(
         np.concatenate(list(res for res in results["Near-KP"].values()))
     )

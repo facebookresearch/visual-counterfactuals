@@ -6,15 +6,16 @@
 
 import argparse
 import os
+
+import model.auxiliary_model as auxiliary_model
 import numpy as np
 import torch
 import yaml
 
-import model.auxiliary_model as auxiliary_model
-
 from explainer.counterfactuals import compute_counterfactual
 from explainer.eval import compute_eval_metrics
 from explainer.utils import get_query_distractor_pairs, process_dataset
+from tqdm import tqdm
 from utils.common_config import (
     get_imagenet_test_transform,
     get_model,
@@ -23,14 +24,9 @@ from utils.common_config import (
     get_test_transform,
 )
 from utils.path import Path
-from tqdm import tqdm
 
-parser = argparse.ArgumentParser(
-    description="Generate counterfactual explanations"
-)
-parser.add_argument(
-    "--config_path", type=str, required=True
-)
+parser = argparse.ArgumentParser(description="Generate counterfactual explanations")
+parser.add_argument("--config_path", type=str, required=True)
 
 
 def main():
@@ -45,9 +41,7 @@ def main():
     os.makedirs(dirpath, exist_ok=True)
 
     # create dataset
-    dataset = get_test_dataset(
-        transform=get_test_transform()
-    )
+    dataset = get_test_dataset(transform=get_test_transform())
     dataloader = get_test_dataloader(config, dataset)
 
     # device
@@ -63,7 +57,7 @@ def main():
     )
     state_dict = torch.load(model_path)["state_dict"]
     for key in list(state_dict.keys()):
-        state_dict[key[len("model."):]] = state_dict[key]
+        state_dict[key[len("model.") :]] = state_dict[key]
         del state_dict[key]
     model.load_state_dict(state_dict, strict=True)
 
@@ -80,7 +74,9 @@ def main():
     query_distractor_pairs = get_query_distractor_pairs(
         dataset,
         confusion_matrix=result["confusion_matrix"],
-        max_num_distractors=config["counterfactuals_kwargs"]["max_num_distractors"]  # noqa
+        max_num_distractors=config["counterfactuals_kwargs"][
+            "max_num_distractors"
+        ],  # noqa
     )
 
     # get classifier head
@@ -93,9 +89,7 @@ def main():
         print("Pre-compute auxiliary features for soft constraint")
         aux_model, aux_dim, n_pix = auxiliary_model.get_auxiliary_model()
         aux_transform = get_imagenet_test_transform()
-        aux_dataset = get_test_dataset(
-            transform=aux_transform, return_image_only=True
-        )
+        aux_dataset = get_test_dataset(transform=aux_transform, return_image_only=True)
         aux_loader = get_test_dataloader(config, aux_dataset)
 
         auxiliary_features = auxiliary_model.process_dataset(
@@ -125,8 +119,12 @@ def main():
             continue  # skip if query classified incorrect
 
         # gather distractor features
-        distractor_target = query_distractor_pairs[query_index]["distractor_class"]  # noqa
-        distractor_index = query_distractor_pairs[query_index]["distractor_index"]  # noqa
+        distractor_target = query_distractor_pairs[query_index][
+            "distractor_class"
+        ]  # noqa
+        distractor_index = query_distractor_pairs[query_index][
+            "distractor_index"
+        ]  # noqa
         if isinstance(distractor_index, int):
             if preds[distractor_index] != distractor_target:
                 continue  # skip if distractor classified is incorrect
@@ -139,9 +137,7 @@ def main():
             if len(distractor_index) == 0:
                 continue  # skip if no distractors classified correct
 
-        distractor = torch.stack(
-            [features[jj] for jj in distractor_index], dim=0
-        )
+        distractor = torch.stack([features[jj] for jj in distractor_index], dim=0)
 
         # soft constraint uses auxiliary features
         if use_auxiliary_features:
@@ -149,10 +145,7 @@ def main():
                 auxiliary_features[query_index]
             )  # aux_dim x n_row x n_row
             distractor_aux_features = torch.stack(
-                [
-                    torch.from_numpy(auxiliary_features[jj])
-                    for jj in distractor_index
-                ],
+                [torch.from_numpy(auxiliary_features[jj]) for jj in distractor_index],
                 dim=0,
             )  # n x aux_dim x n_row x n_row
 
@@ -192,12 +185,8 @@ def main():
     np.save(os.path.join(dirpath, "counterfactuals.npy"), counterfactuals)
 
     # evaluation
-    print("Generated {} counterfactual explanations".format(
-        len(counterfactuals)
-    ))
-    average_num_edits = np.mean(
-        [len(res["edits"]) for res in counterfactuals.values()]
-    )
+    print("Generated {} counterfactual explanations".format(len(counterfactuals)))
+    average_num_edits = np.mean([len(res["edits"]) for res in counterfactuals.values()])
     print("Average number of edits is {:.2f}".format(average_num_edits))
 
     result = compute_eval_metrics(

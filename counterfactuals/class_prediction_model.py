@@ -6,8 +6,9 @@
 
 import argparse
 import json
-import pytorch_lightning as pl
 import os
+
+import pytorch_lightning as pl
 import torch
 import torch.nn as nn
 import torchmetrics
@@ -25,12 +26,8 @@ from utils.common_config import (
 from utils.path import Path
 
 
-parser = argparse.ArgumentParser(
-    description="Train image classification model"
-)
-parser.add_argument(
-    "--config_path", type=str, required=True
-)
+parser = argparse.ArgumentParser(description="Train image classification model")
+parser.add_argument("--config_path", type=str, required=True)
 
 
 class ClassPredictionModule(pl.LightningModule):
@@ -187,12 +184,8 @@ def main():
         **config["trainer"],
     )
 
-    train_dataset = get_train_dataset(
-        transform=get_train_transform()
-    )
-    val_dataset = get_test_dataset(
-        transform=get_test_transform()
-    )
+    train_dataset = get_train_dataset(transform=get_train_transform())
+    val_dataset = get_test_dataset(transform=get_test_transform())
 
     datamodule = pl.LightningDataModule.from_datasets(
         train_dataset=train_dataset,
@@ -210,11 +203,7 @@ def main():
 
     trainer.fit(model=model, datamodule=datamodule, ckpt_path=ckpt_path)
 
-    result = trainer.validate(
-        model,
-        dataloaders=datamodule,
-        ckpt_path="best"
-    )[0]
+    result = trainer.validate(model, dataloaders=datamodule, ckpt_path="best")[0]
 
     with open(os.path.join(dirpath, "val.json"), "w") as f:
         json.dump(result, f)

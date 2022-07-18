@@ -4,12 +4,13 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-import numpy as np
-import pandas as pd
 import pathlib
 
-from torchvision.datasets.folder import default_loader
+import numpy as np
+import pandas as pd
 from torch.utils.data import Dataset
+
+from torchvision.datasets.folder import default_loader
 from utils.path import Path
 
 
@@ -26,6 +27,7 @@ class Cub(Dataset):
     README: http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/README.txt  # noqa
     Download: http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/CUB_200_2011.tgz
     """
+
     def __init__(
         self,
         train=True,
@@ -34,9 +36,7 @@ class Cub(Dataset):
         return_image_only=False,
     ):
 
-        self._dataset_folder = pathlib.Path(
-            Path.db_root_dir("CUB")
-        )
+        self._dataset_folder = pathlib.Path(Path.db_root_dir("CUB"))
         self._transform = transform
         self._loader = loader
         self._train = train
@@ -130,7 +130,7 @@ class Cub(Dataset):
             8: "wing",
             9: "nape",
             10: "tail",
-            11: "throat"
+            11: "throat",
         }
 
         self._inverse_parts_name_index = {
@@ -138,8 +138,9 @@ class Cub(Dataset):
         }
 
         self._parts_index_remap = {
-            self._inverse_original_parts_name_index[key]:
-            self._inverse_parts_name_index[value]
+            self._inverse_original_parts_name_index[
+                key
+            ]: self._inverse_parts_name_index[value]
             for key, value in parts_name_remap.items()
         }
 
@@ -192,9 +193,9 @@ class Cub(Dataset):
 
             else:
                 if "albumentations" in str(type(self._transform)):
-                    return self._transform(
-                        image=np.array(image, dtype=np.uint8)
-                    )["image"]
+                    return self._transform(image=np.array(image, dtype=np.uint8))[
+                        "image"
+                    ]
                 else:
                     return self._transform(image)
 
@@ -210,12 +211,8 @@ class Cub(Dataset):
             axis=1,
         )
 
-        valid_x_coords = np.logical_and(
-            part_locs[:, 0] > 0, part_locs[:, 0] < width
-        )
-        valid_y_coords = np.logical_and(
-            part_locs[:, 1] > 0, part_locs[:, 1] < height
-        )
+        valid_x_coords = np.logical_and(part_locs[:, 0] > 0, part_locs[:, 0] < width)
+        valid_y_coords = np.logical_and(part_locs[:, 1] > 0, part_locs[:, 1] < height)
         valid_coords = np.logical_and(valid_x_coords, valid_y_coords)
         part_ids = part_ids[valid_coords]
         part_locs = part_locs[valid_coords]
@@ -243,12 +240,8 @@ class Cub(Dataset):
         # return parts as binary mask on 7 x 7 grid to ease evaluation
         part_locs = sample["part_locs"]
         part_ids = sample["part_ids"]
-        n_pix_per_cell_h = (
-            sample["image"].shape[1] // 7
-        )
-        n_pix_per_cell_w = (
-            sample["image"].shape[2] // 7
-        )
+        n_pix_per_cell_h = sample["image"].shape[1] // 7
+        n_pix_per_cell_w = sample["image"].shape[2] // 7
         parts = np.zeros((len(self.parts_name_index), 7, 7), dtype=np.uint8)
         for part_loc, part_id in zip(part_locs, part_ids):
             x_coord = int(part_loc[0] // n_pix_per_cell_w)

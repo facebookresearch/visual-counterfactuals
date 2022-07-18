@@ -4,8 +4,8 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import matplotlib.pyplot as plt
 
 
 def visualize_counterfactuals(
@@ -43,8 +43,8 @@ def visualize_counterfactuals(
             width_cell,
             height_cell,
             linewidth=1,
-            edgecolor='r',
-            facecolor='none'
+            edgecolor="r",
+            facecolor="none",
         )
 
         axes[ii][0].imshow(query_img)
@@ -52,15 +52,15 @@ def visualize_counterfactuals(
         axes[ii][0].get_xaxis().set_ticks([])
         axes[ii][0].get_yaxis().set_ticks([])
         if ii == 0:
-            axes[ii][0].set_title('Query')
+            axes[ii][0].set_title("Query")
 
         # show distractor
         cell_index_distractor = edit[1]
 
-        index_distractor = distractor_index[cell_index_distractor // (n_pix ** 2)]
+        index_distractor = distractor_index[cell_index_distractor // (n_pix**2)]
         img_distractor = dataset.__getitem__(index_distractor)
 
-        cell_index_distractor = cell_index_distractor % (n_pix ** 2)
+        cell_index_distractor = cell_index_distractor % (n_pix**2)
         row_index_distractor = cell_index_distractor // n_pix
         col_index_distractor = cell_index_distractor % n_pix
 
@@ -72,8 +72,8 @@ def visualize_counterfactuals(
             width_cell,
             height_cell,
             linewidth=1,
-            edgecolor='r',
-            facecolor='none'
+            edgecolor="r",
+            facecolor="none",
         )
 
         axes[ii][1].imshow(img_distractor)
@@ -88,5 +88,5 @@ def visualize_counterfactuals(
     if fname is None:
         plt.show()
     else:
-        plt.savefig(fname, bbox_inches='tight', dpi=300)
+        plt.savefig(fname, bbox_inches="tight", dpi=300)
     plt.close()

@@ -11,4 +11,3 @@ counterfactuals_kwargs:
     temperature: None
     model: class_prediction_model_cub_res50/best_model.ckpt
     max_num_distractors: 1
- 

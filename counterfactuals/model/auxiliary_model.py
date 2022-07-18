@@ -21,9 +21,7 @@ def get_auxiliary_model():
 
 
 @torch.inference_mode()
-def process_dataset(
-    model, dim, n_pix, dataloader, device
-):
+def process_dataset(model, dim, n_pix, dataloader, device):
     """
     Compute spatial feature representations using a pre-trained model.
     """
@@ -36,7 +34,7 @@ def process_dataset(
     for batch in dataloader:
         batch_size = batch.shape[0]
         output = model(batch.to(device)).reshape(batch_size, dim, n_pix, n_pix)
-        features[idx:idx + batch_size].copy_(output)
+        features[idx : idx + batch_size].copy_(output)
         idx += batch_size
 
     return features

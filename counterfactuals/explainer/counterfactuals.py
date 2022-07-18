@@ -65,14 +65,10 @@ def compute_counterfactual(
 
     # determine all possible edits
     query_edits = (
-        np.arange(
-            query_fl.shape[0] * distractor_fl.shape[0]
-        ) // distractor_fl.shape[0]
+        np.arange(query_fl.shape[0] * distractor_fl.shape[0]) // distractor_fl.shape[0]
     )
     distractor_edits = (
-        np.arange(
-            query_fl.shape[0] * distractor_fl.shape[0]
-        ) % distractor_fl.shape[0]
+        np.arange(query_fl.shape[0] * distractor_fl.shape[0]) % distractor_fl.shape[0]
     )
     all_edits = [(i, j) for i, j in zip(query_edits, distractor_edits)]
 
@@ -91,9 +87,7 @@ def compute_counterfactual(
     # loop until prediction changes
     while (
         torch.argmax(
-            classification_head(current.t().contiguous().view(
-                1, n_feat, n_pix, n_pix
-            )),
+            classification_head(current.t().contiguous().view(1, n_feat, n_pix, n_pix)),
             dim=1,
         )
         != distractor_class
@@ -115,7 +109,9 @@ def compute_counterfactual(
         list_of_edits.append((query_cell, distractor_cell))
         current[query_cell].copy_(distractor_fl[distractor_cell])
         all_edits = [
-            (i, j) for i, j in all_edits if i != query_cell and j != distractor_cell  # noqa
+            (i, j)
+            for i, j in all_edits
+            if i != query_cell and j != distractor_cell  # noqa
         ]
         all_combinations = _get_feature_representations_of_all_edits(
             current, distractor_fl, all_edits
@@ -124,9 +120,7 @@ def compute_counterfactual(
     return list_of_edits
 
 
-def _find_knn_cells(
-    query_aux_features, distractor_aux_features, all_edits, topk
-):
+def _find_knn_cells(query_aux_features, distractor_aux_features, all_edits, topk):
     """
     Find top-K most semantically similar cells using auxiliary feature
     representations.
@@ -149,9 +143,7 @@ def _find_knn_cells(
     return [all_edits[ii] for ii in knn]
 
 
-def _get_feature_representations_of_all_edits(
-    query_fl, distractor_fl, all_edits
-):
+def _get_feature_representations_of_all_edits(query_fl, distractor_fl, all_edits):
     """
     Construct feature representations when performing different edits.
     """

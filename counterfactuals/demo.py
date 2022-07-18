@@ -5,20 +5,17 @@
 # LICENSE file in the root directory of this source tree.
 
 import argparse
-import numpy as np
 import os
+
+import numpy as np
 
 from utils.common_config import get_test_dataset, get_vis_transform
 from utils.path import Path
 from utils.visualize import visualize_counterfactuals
 
 
-parser = argparse.ArgumentParser(
-    description="Visualize counterfactual explanations"
-)
-parser.add_argument(
-    "--config_path", type=str, required=True
-)
+parser = argparse.ArgumentParser(description="Visualize counterfactual explanations")
+parser.add_argument("--config_path", type=str, required=True)
 
 
 def main():
@@ -30,8 +27,7 @@ def main():
     dataset = get_test_dataset(get_vis_transform(), return_image_only=True)
 
     counterfactuals = np.load(
-        os.path.join(dirpath, "counterfactuals.npy"),
-        allow_pickle=True
+        os.path.join(dirpath, "counterfactuals.npy"), allow_pickle=True
     ).item()
 
     for idx in np.random.choice(list(counterfactuals.keys()), 5):
@@ -43,7 +39,7 @@ def main():
             distractor_index=cf["distractor_index"],
             dataset=dataset,
             n_pix=7,
-            fname=f"example_{idx}.png"
+            fname=f"example_{idx}.png",
         )
 
 

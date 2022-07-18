@@ -25,19 +25,11 @@ def get_model(p):
 
 
 def get_train_dataset(transform, return_image_only=False):
-    return Cub(
-        train=True,
-        transform=transform,
-        return_image_only=return_image_only
-    )
+    return Cub(train=True, transform=transform, return_image_only=return_image_only)
 
 
 def get_test_dataset(transform, return_image_only=False):
-    return Cub(
-        train=False,
-        transform=transform,
-        return_image_only=return_image_only
-    )
+    return Cub(train=False, transform=transform, return_image_only=return_image_only)
 
 
 def get_train_transform():
@@ -45,10 +37,7 @@ def get_train_transform():
         [
             albumentations.RandomResizedCrop(width=224, height=224),
             albumentations.HorizontalFlip(),
-            albumentations.Normalize(
-                (0.471, 0.460, 0.454),
-                (0.267, 0.266, 0.271)
-            ),
+            albumentations.Normalize((0.471, 0.460, 0.454), (0.267, 0.266, 0.271)),
             ToTensorV2(),
         ],
         keypoint_params=albumentations.KeypointParams(
@@ -71,10 +60,7 @@ def get_test_transform():
         [
             albumentations.SmallestMaxSize(max_size=256),
             albumentations.CenterCrop(width=224, height=224),
-            albumentations.Normalize(
-                (0.471, 0.460, 0.454),
-                (0.267, 0.266, 0.271)
-            ),
+            albumentations.Normalize((0.471, 0.460, 0.454), (0.267, 0.266, 0.271)),
             ToTensorV2(),
         ],
         keypoint_params=albumentations.KeypointParams(

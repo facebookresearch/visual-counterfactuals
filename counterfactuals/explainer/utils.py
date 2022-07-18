@@ -44,9 +44,7 @@ def get_query_distractor_pairs(
 
         # randomly select `max_num_distractors`
         num_random = min(len(distractor_index), max_num_distractors)
-        distractor_index = np.random.choice(
-            distractor_index, num_random, replace=False
-        )
+        distractor_index = np.random.choice(distractor_index, num_random, replace=False)
         distractor_index = distractor_index.reshape(-1).tolist()
 
         # add to dictionary
@@ -61,9 +59,7 @@ def get_query_distractor_pairs(
 
 
 @torch.no_grad()
-def process_dataset(
-        model, dataloader, device
-):
+def process_dataset(model, dataloader, device):
     """
     Process a dataset using a pre-trained classification model.
     We return the spatial feature representations, the predictions,

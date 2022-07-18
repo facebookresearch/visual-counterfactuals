@@ -42,7 +42,7 @@ Alternatively, you can train an image classifier yourself
 python class_prediction_model.py --config_path counterfactuals/configs/class_prediction_model/class_prediction_model_cub_vgg16.yaml
 
 # Train a ResNet-50 classifier on CUB
-python class_prediction_model.py --config_path counterfactuals/configs/class_prediction_model/class_prediction_model_cub_res50.yaml 
+python class_prediction_model.py --config_path counterfactuals/configs/class_prediction_model/class_prediction_model_cub_res50.yaml
 ```
 
 ## Counterfactuals
