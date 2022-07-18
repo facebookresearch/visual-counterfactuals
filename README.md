@@ -65,7 +65,7 @@ python explain_model.py --config_path configs/counterfactuals/counterfactuals_ou
 
 ## Results
 
-We obtain the following results with VGG-16 for __all edits__. Small differences with the results from the paper can be attributed to the variance across different runs.
+We obtain the following results with VGG-16 for __all edits__. Small differences with the results from the paper can be attributed to the variance across different CUB model training runs.
 
 | Method     | Near KP | Same KP | Number Edits |
 |------------|---------|---------|--------------|
@@ -92,10 +92,10 @@ python demo.py --config_path configs/counterfactuals/counterfactuals_ours_cub_vg
 ## References
 
 ```bibtex
-@article{vandenhende2022making,
+@inproceedings{vandenhende2022making,
   title={Making Heads or Tails: Towards Semantically Consistent Visual Counterfactuals},
   author={Vandenhende, Simon and Mahajan, Dhruv and Radenovic, Filip and Ghadiyaram, Deepti},
-  journal={ECCV 2022},
+  booktitle={ECCV 2022},
   year={2022}
 }
 ```
