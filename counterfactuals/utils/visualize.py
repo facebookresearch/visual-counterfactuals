@@ -68,7 +68,7 @@ def visualize_counterfactuals(
         distractor_top_box = int(row_index_distractor * height_cell)
 
         rect = patches.Rectangle(
-            (distractor_left_box, distractor_top_box), 
+            (distractor_left_box, distractor_top_box),
             width_cell,
             height_cell,
             linewidth=1,

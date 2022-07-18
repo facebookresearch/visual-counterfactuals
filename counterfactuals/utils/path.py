@@ -8,11 +8,11 @@ class Path:
     @staticmethod
     def db_root_dir(db_name):
         if db_name == "CUB":
-            return "/private/home/svandenh/data/cub/CUB_200_2011/"
+            return "/path/to/dataset"
 
         else:
             raise NotImplementedError
 
     @staticmethod
     def output_root_dir():
-        return "/private/home/svandenh/counterfactuals/"
+        return "/path/to/output/"

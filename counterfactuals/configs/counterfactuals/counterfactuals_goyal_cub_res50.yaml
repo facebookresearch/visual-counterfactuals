@@ -10,4 +10,5 @@ counterfactuals_kwargs:
     lambd: 0.0
     temperature: None
     model: class_prediction_model_cub_res50/best_model.ckpt
-    max_num_distractors: 1 
+    max_num_distractors: 1
+ 

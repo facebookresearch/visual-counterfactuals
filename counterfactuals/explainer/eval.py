@@ -100,10 +100,10 @@ def compute_eval_metrics(
         [res[0] for res in results["Same-KP"].values()]
     )
     all_edit["Near-KP"] = np.nanmean(
-        np.concatenate([res for res in results["Near-KP"].values()])
+        np.concatenate(list(res for res in results["Near-KP"].values()))
     )
     all_edit["Same-KP"] = np.nanmean(
-        np.concatenate([res for res in results["Same-KP"].values()])
+        np.concatenate(list(res for res in results["Same-KP"].values()))
     )
 
     # report results for single-edit and all edits
