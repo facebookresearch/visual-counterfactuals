@@ -1,0 +1,14 @@
+batch_size: 64
+num_workers: 4
+
+model: VGG16
+model_kwargs:
+    num_classes: 200
+
+counterfactuals_kwargs:
+    apply_soft_constraint: True
+    lambd: 0.4
+    temperature: 0.1
+    topk: 0.2
+    model: class_prediction_model_cub_vgg16/best_model.ckpt
+    max_num_distractors: 20

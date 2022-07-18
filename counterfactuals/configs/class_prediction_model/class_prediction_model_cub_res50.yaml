@@ -1,0 +1,19 @@
+batch_size: 32
+num_workers: 8
+
+model: ResNet50
+model_kwargs:
+  num_classes: 200
+
+class_prediction_module:
+  optimizer: SGD
+  learning_rate: 0.001
+  momentum: 0.9
+  weight_decay: 0.0005
+  milestones: [30, 60, 90]
+  gamma: 0.1
+
+trainer:
+  gpus: 1
+  num_nodes: 1
+  max_epochs: 100
